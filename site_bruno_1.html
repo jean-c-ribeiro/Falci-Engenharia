@@ -1,0 +1,2384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FALCI Engenharia e Soluções</title>
+
+    <meta name="description"
+          content="Falci Engenharia — Topografia, aerofotogrametria e soluções de engenharia em São Paulo.">
+
+    <!-- Fonte -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #07090b;
+            color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+
+        /* =========================================================
+           VARIÁVEIS
+        ========================================================= */
+
+        :root {
+            --bg: #07090b;
+            --bg2: #0c1014;
+            --card: rgba(255,255,255,.045);
+            --border: rgba(255,255,255,.10);
+
+            --white: #ffffff;
+            --gray: #9ca3af;
+            --green: #a7d86d;
+            --green2: #c4f18a;
+
+            --max: 1250px;
+        }
+
+
+        /* =========================================================
+           UTILITÁRIOS
+        ========================================================= */
+
+        .container {
+            width: min(var(--max), calc(100% - 40px));
+            margin: auto;
+        }
+
+        .section {
+            padding: 130px 0;
+            position: relative;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+
+            color: var(--green);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+
+            margin-bottom: 20px;
+        }
+
+        .section-label::before {
+            content: "";
+            width: 25px;
+            height: 1px;
+            background: var(--green);
+        }
+
+        .section-title {
+            font-family: "Manrope", sans-serif;
+            font-size: clamp(36px, 5vw, 65px);
+            line-height: 1;
+            letter-spacing: -3px;
+            max-width: 850px;
+        }
+
+        .section-text {
+            color: var(--gray);
+            max-width: 650px;
+            line-height: 1.8;
+            margin-top: 25px;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 80px;
+
+            z-index: 1000;
+
+            background: rgba(7,9,11,.55);
+            backdrop-filter: blur(18px);
+
+            border-bottom: 1px solid rgba(255,255,255,.06);
+        }
+
+        nav {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: "Manrope", sans-serif;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .logo-mark {
+            width: 38px;
+            height: 38px;
+
+            display: grid;
+            place-items: center;
+
+            border: 1px solid var(--green);
+            color: var(--green);
+
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+
+            color: #bfc3c8;
+            font-size: 14px;
+        }
+
+        .nav-links a {
+            transition: .3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--green);
+        }
+
+        .nav-button {
+            padding: 12px 20px;
+
+            border: 1px solid var(--green);
+            color: var(--green);
+
+            transition: .3s;
+        }
+
+        .nav-button:hover {
+            background: var(--green);
+            color: #080a0c;
+        }
+
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero {
+            min-height: 100vh;
+
+            position: relative;
+            display: flex;
+            align-items: center;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(circle at 75% 45%, rgba(167,216,109,.10), transparent 30%),
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,.03), transparent 30%);
+        }
+
+        #topographyCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: .28;
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+
+            background-image:
+                linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+
+            background-size: 70px 70px;
+
+            mask-image: radial-gradient(circle, black, transparent 75%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+
+            padding-top: 80px;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+
+            color: var(--green);
+
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+
+            margin-bottom: 30px;
+        }
+
+        .hero-tag span {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+
+            box-shadow: 0 0 20px var(--green);
+        }
+
+        .hero h1 {
+            font-family: "Manrope", sans-serif;
+
+            font-size: clamp(55px, 8vw, 115px);
+            line-height: .9;
+            letter-spacing: -7px;
+
+            max-width: 1000px;
+        }
+
+        .hero h1 strong {
+            color: var(--green);
+            font-weight: 800;
+        }
+
+        .hero-description {
+            max-width: 580px;
+
+            color: #a8adb3;
+            line-height: 1.8;
+
+            font-size: 16px;
+
+            margin-top: 35px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 16px 25px;
+
+            font-weight: 600;
+            font-size: 14px;
+
+            transition: .3s;
+        }
+
+        .btn-primary {
+            background: var(--green);
+            color: #080a0c;
+        }
+
+        .btn-primary:hover {
+            background: var(--green2);
+            transform: translateY(-3px);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border);
+            color: white;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            color: #656b71;
+
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+
+        /* =========================================================
+           MARQUEE
+        ========================================================= */
+
+        .marquee {
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+
+            overflow: hidden;
+
+            padding: 20px 0;
+
+            background: #090c0f;
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+
+            animation: marquee 25s linear infinite;
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+
+            padding-right: 40px;
+
+            color: #555c62;
+
+            font-family: "Manrope";
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .marquee-item span {
+            color: var(--green);
+        }
+
+        @keyframes marquee {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+
+        /* =========================================================
+           SERVIÇOS
+        ========================================================= */
+
+        .services-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 15px;
+
+            margin-top: 70px;
+        }
+
+        .service-card {
+            position: relative;
+
+            min-height: 350px;
+
+            padding: 35px;
+
+            border: 1px solid var(--border);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.06),
+                    rgba(255,255,255,.015)
+                );
+
+            overflow: hidden;
+
+            transition: .4s;
+        }
+
+        .service-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 250px;
+            height: 250px;
+
+            border: 1px solid rgba(167,216,109,.10);
+            border-radius: 50%;
+
+            right: -120px;
+            bottom: -120px;
+
+            transition: .6s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+
+            border-color: rgba(167,216,109,.4);
+        }
+
+        .service-card:hover::before {
+            transform: scale(1.5);
+        }
+
+        .service-number {
+            color: #4f555a;
+
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+
+        .service-icon {
+            width: 50px;
+            height: 50px;
+
+            display: grid;
+            place-items: center;
+
+            border: 1px solid var(--border);
+
+            color: var(--green);
+
+            margin: 50px 0 30px;
+
+            font-size: 20px;
+        }
+
+        .service-card h3 {
+            font-family: "Manrope";
+
+            font-size: 25px;
+
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: #858b91;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+           3D SECTION
+        ========================================================= */
+
+        .terrain-section {
+            background: #050708;
+
+            overflow: hidden;
+        }
+
+        .terrain-layout {
+            display: grid;
+
+            grid-template-columns: .8fr 1.2fr;
+
+            align-items: center;
+
+            gap: 50px;
+        }
+
+        #terrain3d {
+            width: 100%;
+            height: 600px;
+
+            position: relative;
+        }
+
+        .terrain-info {
+            position: relative;
+            z-index: 2;
+        }
+
+        .terrain-stat {
+            margin-top: 45px;
+
+            display: grid;
+
+            grid-template-columns: repeat(2,1fr);
+
+            gap: 30px;
+
+            border-top: 1px solid var(--border);
+
+            padding-top: 25px;
+        }
+
+        .stat-number {
+            font-family: "Manrope";
+
+            font-size: 38px;
+            font-weight: 800;
+
+            color: var(--green);
+        }
+
+        .stat-label {
+            color: #666d73;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+
+        /* =========================================================
+           PROCESSO
+        ========================================================= */
+
+        .process {
+            margin-top: 80px;
+
+            display: grid;
+
+            grid-template-columns: repeat(4,1fr);
+
+            border-top: 1px solid var(--border);
+        }
+
+        .process-item {
+            padding: 35px 25px;
+
+            border-right: 1px solid var(--border);
+        }
+
+        .process-item:last-child {
+            border-right: none;
+        }
+
+        .process-number {
+            color: var(--green);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            margin-bottom: 50px;
+        }
+
+        .process-item h3 {
+            font-family: "Manrope";
+            font-size: 20px;
+
+            margin-bottom: 12px;
+        }
+
+        .process-item p {
+            color: #777e84;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+           ÁREA DE ATUAÇÃO
+        ========================================================= */
+
+        .coverage {
+            background: #090c0f;
+        }
+
+        .coverage-box {
+            margin-top: 70px;
+
+            min-height: 500px;
+
+            border: 1px solid var(--border);
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(167,216,109,.10),
+                    transparent 45%
+                );
+        }
+
+        .map-grid {
+            position: absolute;
+            inset: 0;
+
+            background-image:
+                linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+
+            background-size: 45px 45px;
+        }
+
+        .map-dot {
+            position: absolute;
+
+            width: 12px;
+            height: 12px;
+
+            border-radius: 50%;
+
+            background: var(--green);
+
+            box-shadow:
+                0 0 0 8px rgba(167,216,109,.08),
+                0 0 30px rgba(167,216,109,.7);
+        }
+
+        .map-dot.one {
+            left: 40%;
+            top: 50%;
+        }
+
+        .map-dot.two {
+            left: 52%;
+            top: 35%;
+        }
+
+        .map-dot.three {
+            left: 62%;
+            top: 60%;
+        }
+
+        .map-line {
+            position: absolute;
+
+            height: 1px;
+
+            background: linear-gradient(
+                90deg,
+                transparent,
+                var(--green),
+                transparent
+            );
+
+            transform-origin: left;
+
+            opacity: .35;
+        }
+
+        .line1 {
+            width: 300px;
+
+            left: 40%;
+            top: 50%;
+
+            transform: rotate(-25deg);
+        }
+
+        .line2 {
+            width: 240px;
+
+            left: 40%;
+            top: 50%;
+
+            transform: rotate(20deg);
+        }
+
+        .coverage-text {
+            position: absolute;
+
+            left: 40px;
+            bottom: 40px;
+        }
+
+        .coverage-text h3 {
+            font-family: "Manrope";
+
+            font-size: 25px;
+        }
+
+        .coverage-text p {
+            color: #7d8489;
+
+            margin-top: 10px;
+        }
+
+
+        /* =========================================================
+           ORÇAMENTO
+        ========================================================= */
+
+        .budget {
+            position: relative;
+
+            background:
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(167,216,109,.10),
+                    transparent 30%
+                );
+        }
+
+        .budget-layout {
+            display: grid;
+
+            grid-template-columns: .8fr 1.2fr;
+
+            gap: 80px;
+
+            align-items: start;
+        }
+
+        .budget-info h2 {
+            font-family: "Manrope";
+
+            font-size: clamp(40px,5vw,65px);
+
+            line-height: 1;
+
+            letter-spacing: -3px;
+        }
+
+        .budget-info p {
+            color: #888f95;
+
+            line-height: 1.8;
+
+            margin-top: 25px;
+        }
+
+        .contact-data {
+            margin-top: 45px;
+        }
+
+        .contact-data div {
+            padding: 15px 0;
+
+            border-bottom: 1px solid var(--border);
+
+            color: #aaa;
+
+            font-size: 14px;
+        }
+
+        .contact-data strong {
+            color: white;
+            margin-right: 10px;
+        }
+
+        .budget-form {
+            padding: 40px;
+
+            border: 1px solid var(--border);
+
+            background: rgba(255,255,255,.025);
+
+            backdrop-filter: blur(10px);
+        }
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns: repeat(2,1fr);
+
+            gap: 18px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+
+            gap: 8px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            color: #8b9298;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+
+            padding: 15px;
+
+            border: 1px solid var(--border);
+
+            background: #0b0e11;
+
+            color: white;
+
+            outline: none;
+
+            transition: .3s;
+        }
+
+        .field textarea {
+            min-height: 130px;
+
+            resize: vertical;
+        }
+
+        .field input:focus,
+        .field textarea:focus,
+        .field select:focus {
+            border-color: var(--green);
+        }
+
+        .form-submit {
+            width: 100%;
+
+            border: none;
+
+            cursor: pointer;
+
+            margin-top: 20px;
+        }
+
+        .success-message {
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            border: 1px solid rgba(167,216,109,.3);
+
+            color: var(--green);
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+            border-top: 1px solid var(--border);
+
+            padding: 40px 0;
+
+            background: #050708;
+        }
+
+        .footer-content {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            color: #62686d;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================================
+           RESPONSIVO
+        ========================================================= */
+
+        @media(max-width:900px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .terrain-layout,
+            .budget-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .terrain-layout {
+                gap: 0;
+            }
+
+            .process {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .process-item:nth-child(2) {
+                border-right: none;
+            }
+
+            #terrain3d {
+                height: 450px;
+            }
+        }
+
+
+        @media(max-width:600px) {
+
+            .container {
+                width: min(100% - 28px, var(--max));
+            }
+
+            .section {
+                padding: 90px 0;
+            }
+
+            .hero h1 {
+                letter-spacing: -4px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process {
+                grid-template-columns: 1fr;
+            }
+
+            .process-item {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            .budget-form {
+                padding: 25px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header>
+
+    <div class="container">
+
+        <nav>
+
+            <a href="#" class="logo">
+
+                <div class="logo-mark">
+                    F
+                </div>
+
+                <div>
+                    FALCI
+                    <span style="font-weight:400;color:#777;">
+                        ENGENHARIA
+                    </span>
+                </div>
+
+            </a>
+
+
+            <div class="nav-links">
+
+                <a href="#servicos">Serviços</a>
+
+                <a href="#tecnologia">Tecnologia</a>
+
+                <a href="#atuacao">Atuação</a>
+
+                <a href="#orcamento">Orçamento</a>
+
+            </div>
+
+
+            <a href="#orcamento" class="nav-button">
+                Solicitar orçamento
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <canvas id="topographyCanvas"></canvas>
+
+    <div class="hero-grid"></div>
+
+
+    <div class="container hero-content">
+
+        <div class="hero-tag">
+
+            <span></span>
+
+            Engenharia & Geotecnologia
+
+        </div>
+
+
+        <h1>
+
+            Precisão que
+            transforma o
+            <strong>terreno.</strong>
+
+        </h1>
+
+
+        <p class="hero-description">
+
+            A Falci Engenharia atua com topografia,
+            aerofotogrametria e soluções de engenharia,
+            levando precisão e tecnologia para projetos
+            residenciais, comerciais e industriais.
+
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a href="#orcamento"
+               class="btn btn-primary">
+
+                Solicitar orçamento →
+
+            </a>
+
+            <a href="#servicos"
+               class="btn btn-outline">
+
+                Conhecer serviços
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="hero-scroll">
+        Scroll para explorar
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     MARQUEE
+========================================================= -->
+
+<div class="marquee">
+
+    <div class="marquee-track">
+
+        <div class="marquee-item">
+            TOPOGRAFIA <span>+</span>
+        </div>
+
+        <div class="marquee-item">
+            AEROFOTOGRAMETRIA <span>+</span>
+        </div>
+
+        <div class="marquee-item">
+            GEOTECNOLOGIA <span>+</span>
+        </div>
+
+        <div class="marquee-item">
+            ENGENHARIA <span>+</span>
+        </div>
+
+        <div class="marquee-item">
+            PRECISÃO <span>+</span>
+        </div>
+
+        <div class="marquee-item">
+            TOPOGRAFIA <span>+</span>
+        </div>
+
+        <div class="marquee-item">
+            AEROFOTOGRAMETRIA <span>+</span>
+        </div>
+
+        <div class="marquee-item">
+            GEOTECNOLOGIA <span>+</span>
+        </div>
+
+        <div class="marquee-item">
+            ENGENHARIA <span>+</span>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     SERVIÇOS
+========================================================= -->
+
+<section class="section" id="servicos">
+
+    <div class="container">
+
+        <div class="section-label">
+            O que fazemos
+        </div>
+
+
+        <h2 class="section-title">
+            Dados precisos para decisões melhores.
+        </h2>
+
+
+        <p class="section-text">
+
+            Utilizamos equipamentos, tecnologia e metodologia
+            adequada para transformar o terreno em informações
+            confiáveis para o seu projeto.
+
+        </p>
+
+
+        <div class="services-grid">
+
+
+            <article class="service-card">
+
+                <span class="service-number">
+                    01 / 06
+                </span>
+
+                <div class="service-icon">
+                    ⌖
+                </div>
+
+                <h3>
+                    Topografia
+                </h3>
+
+                <p>
+                    Levantamentos topográficos para obtenção
+                    precisa das características e dimensões
+                    do terreno.
+                </p>
+
+            </article>
+
+
+
+            <article class="service-card">
+
+                <span class="service-number">
+                    02 / 06
+                </span>
+
+                <div class="service-icon">
+                    ◇
+                </div>
+
+                <h3>
+                    Aerofotogrametria
+                </h3>
+
+                <p>
+                    Levantamentos aéreos utilizando drones
+                    para geração de dados e modelos digitais.
+                </p>
+
+            </article>
+
+
+
+            <article class="service-card">
+
+                <span class="service-number">
+                    03 / 06
+                </span>
+
+                <div class="service-icon">
+                    ◎
+                </div>
+
+                <h3>
+                    Georreferenciamento
+                </h3>
+
+                <p>
+                    Determinação e representação precisa
+                    da localização espacial de áreas e terrenos.
+                </p>
+
+            </article>
+
+
+
+            <article class="service-card">
+
+                <span class="service-number">
+                    04 / 06
+                </span>
+
+                <div class="service-icon">
+                    ▦
+                </div>
+
+                <h3>
+                    Levantamentos
+                </h3>
+
+                <p>
+                    Levantamentos planialtimétricos para
+                    projetos, obras e empreendimentos.
+                </p>
+
+            </article>
+
+
+
+            <article class="service-card">
+
+                <span class="service-number">
+                    05 / 06
+                </span>
+
+                <div class="service-icon">
+                    △
+                </div>
+
+                <h3>
+                    Modelagem 3D
+                </h3>
+
+                <p>
+                    Representação tridimensional do terreno
+                    para análise e visualização do projeto.
+                </p>
+
+            </article>
+
+
+
+            <article class="service-card">
+
+                <span class="service-number">
+                    06 / 06
+                </span>
+
+                <div class="service-icon">
+                    +
+                </div>
+
+                <h3>
+                    Soluções de Engenharia
+                </h3>
+
+                <p>
+                    Serviços especializados para apoiar
+                    projetos residenciais, comerciais e industriais.
+                </p>
+
+            </article>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     3D
+========================================================= -->
+
+<section class="section terrain-section"
+         id="tecnologia">
+
+    <div class="container">
+
+        <div class="terrain-layout">
+
+
+            <div class="terrain-info">
+
+                <div class="section-label">
+                    Tecnologia
+                </div>
+
+
+                <h2 class="section-title">
+                    O terreno,
+                    em três dimensões.
+                </h2>
+
+
+                <p class="section-text">
+
+                    A tecnologia permite transformar informações
+                    coletadas em campo em representações digitais
+                    que facilitam a análise e o planejamento.
+
+                </p>
+
+
+                <div class="terrain-stat">
+
+                    <div>
+
+                        <div class="stat-number">
+                            3D
+                        </div>
+
+                        <div class="stat-label">
+                            Modelagem digital
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="stat-number">
+                            GPS
+                        </div>
+
+                        <div class="stat-label">
+                            Precisão espacial
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div id="terrain3d"></div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     PROCESSO
+========================================================= -->
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="section-label">
+            Como funciona
+        </div>
+
+
+        <h2 class="section-title">
+            Do campo ao dado.
+        </h2>
+
+
+        <div class="process">
+
+
+            <div class="process-item">
+
+                <div class="process-number">
+                    01
+                </div>
+
+                <h3>
+                    Planejamento
+                </h3>
+
+                <p>
+                    Entendimento das necessidades
+                    e definição da metodologia.
+                </p>
+
+            </div>
+
+
+            <div class="process-item">
+
+                <div class="process-number">
+                    02
+                </div>
+
+                <h3>
+                    Levantamento
+                </h3>
+
+                <p>
+                    Coleta de informações diretamente
+                    em campo.
+                </p>
+
+            </div>
+
+
+            <div class="process-item">
+
+                <div class="process-number">
+                    03
+                </div>
+
+                <h3>
+                    Processamento
+                </h3>
+
+                <p>
+                    Tratamento e processamento dos
+                    dados coletados.
+                </p>
+
+            </div>
+
+
+            <div class="process-item">
+
+                <div class="process-number">
+                    04
+                </div>
+
+                <h3>
+                    Entrega
+                </h3>
+
+                <p>
+                    Informações organizadas para
+                    utilização no projeto.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     ATUAÇÃO
+========================================================= -->
+
+<section class="section coverage"
+         id="atuacao">
+
+    <div class="container">
+
+        <div class="section-label">
+            Área de atuação
+        </div>
+
+
+        <h2 class="section-title">
+            São Roque para
+            todo São Paulo.
+        </h2>
+
+
+        <p class="section-text">
+
+            Com sede em São Roque, a Falci Engenharia
+            atende projetos em diferentes regiões
+            do estado de São Paulo.
+
+        </p>
+
+
+        <div class="coverage-box">
+
+            <div class="map-grid"></div>
+
+            <div class="map-dot one"></div>
+
+            <div class="map-dot two"></div>
+
+            <div class="map-dot three"></div>
+
+            <div class="map-line line1"></div>
+
+            <div class="map-line line2"></div>
+
+
+            <div class="coverage-text">
+
+                <h3>
+                    São Paulo — SP
+                </h3>
+
+                <p>
+                    Atendimento em todo o estado.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     ORÇAMENTO
+========================================================= -->
+
+<section class="section budget"
+         id="orcamento">
+
+    <div class="container">
+
+        <div class="budget-layout">
+
+
+            <div class="budget-info">
+
+                <div class="section-label">
+                    Fale conosco
+                </div>
+
+
+                <h2>
+                    Vamos transformar
+                    seu projeto
+                    em realidade.
+                </h2>
+
+
+                <p>
+
+                    Conte um pouco sobre o que você precisa.
+                    Nossa equipe poderá entender sua demanda
+                    e avaliar a melhor solução para o serviço.
+
+                </p>
+
+
+                <div class="contact-data">
+
+                    <div>
+                        <strong>Localização:</strong>
+                        São Roque — SP
+                    </div>
+
+                    <div>
+                        <strong>Atendimento:</strong>
+                        Estado de São Paulo
+                    </div>
+
+                    <div>
+                        <strong>Serviços:</strong>
+                        Engenharia e Geotecnologia
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <form class="budget-form"
+                  id="budgetForm">
+
+
+                <div class="form-grid">
+
+
+                    <div class="field">
+
+                        <label>
+                            Nome
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nome"
+                            placeholder="Seu nome"
+                            required>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Empresa
+                        </label>
+
+                        <input
+                            type="text"
+                            id="empresa"
+                            placeholder="Nome da empresa">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            WhatsApp
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="telefone"
+                            placeholder="(11) 99999-9999"
+                            required>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            E-mail
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="seu@email.com">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Cidade
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cidade"
+                            placeholder="Cidade do serviço"
+                            required>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Serviço
+                        </label>
+
+                        <select id="servico">
+
+                            <option value="">
+                                Selecione
+                            </option>
+
+                            <option>
+                                Topografia
+                            </option>
+
+                            <option>
+                                Aerofotogrametria
+                            </option>
+
+                            <option>
+                                Georreferenciamento
+                            </option>
+
+                            <option>
+                                Levantamento planialtimétrico
+                            </option>
+
+                            <option>
+                                Modelagem 3D
+                            </option>
+
+                            <option>
+                                Outro serviço
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field full">
+
+                        <label>
+                            Sobre o projeto
+                        </label>
+
+                        <textarea
+                            id="mensagem"
+                            placeholder="Descreva brevemente o que você precisa..."
+                            required></textarea>
+
+                    </div>
+
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary form-submit">
+
+                    Solicitar orçamento →
+
+                </button>
+
+
+                <div
+                    class="success-message"
+                    id="successMessage">
+
+                    Sua solicitação foi preparada.
+                    Em breve entraremos em contato.
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <div class="container">
+
+        <div class="footer-content">
+
+            <div>
+                © 2026 FALCI Engenharia e Soluções
+            </div>
+
+            <div>
+                São Roque — SP
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<script>
+
+/* =========================================================
+   TOPOGRAPHY CANVAS
+========================================================= */
+
+const canvas =
+    document.getElementById("topographyCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+let mouseX = 0;
+let mouseY = 0;
+
+function resizeCanvas() {
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+}
+
+resizeCanvas();
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+
+window.addEventListener(
+    "mousemove",
+    function(e) {
+
+        mouseX =
+            (e.clientX / window.innerWidth - .5);
+
+        mouseY =
+            (e.clientY / window.innerHeight - .5);
+
+    }
+);
+
+
+function drawTopography() {
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    const width =
+        canvas.width;
+
+    const height =
+        canvas.height;
+
+
+    for(let layer = 0; layer < 12; layer++) {
+
+        ctx.beginPath();
+
+        for(
+            let x = -100;
+            x < width + 100;
+            x += 10
+        ) {
+
+            const wave =
+                Math.sin(
+                    x * .008 +
+                    layer * .6 +
+                    mouseX
+                ) * 30;
+
+            const wave2 =
+                Math.cos(
+                    x * .003 +
+                    layer
+                ) * 25;
+
+
+            const y =
+                height * .15 +
+                layer * 70 +
+                wave +
+                wave2 +
+                mouseY * 30;
+
+
+            if(x === -100) {
+
+                ctx.moveTo(x,y);
+
+            } else {
+
+                ctx.lineTo(x,y);
+
+            }
+
+        }
+
+
+        ctx.strokeStyle =
+            `rgba(167,216,109,${.025 + layer*.004})`;
+
+        ctx.lineWidth = 1;
+
+        ctx.stroke();
+
+    }
+
+
+    requestAnimationFrame(
+        drawTopography
+    );
+
+}
+
+drawTopography();
+
+
+
+/* =========================================================
+   3D TERRAIN
+========================================================= */
+
+const terrainContainer =
+    document.getElementById("terrain3d");
+
+
+const scene =
+    new THREE.Scene();
+
+
+const camera =
+    new THREE.PerspectiveCamera(
+        45,
+        terrainContainer.clientWidth /
+        terrainContainer.clientHeight,
+        .1,
+        100
+    );
+
+
+const renderer =
+    new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true
+    });
+
+
+renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio,2)
+);
+
+
+renderer.setSize(
+    terrainContainer.clientWidth,
+    terrainContainer.clientHeight
+);
+
+
+terrainContainer.appendChild(
+    renderer.domElement
+);
+
+
+camera.position.set(
+    0,
+    5,
+    9
+);
+
+
+/* luz */
+
+const light =
+    new THREE.PointLight(
+        0xa7d86d,
+        2,
+        30
+    );
+
+light.position.set(
+    3,
+    5,
+    4
+);
+
+scene.add(light);
+
+
+const ambient =
+    new THREE.AmbientLight(
+        0xffffff,
+        .4
+    );
+
+scene.add(ambient);
+
+
+/* terreno */
+
+const geometry =
+    new THREE.PlaneGeometry(
+        8,
+        8,
+        50,
+        50
+    );
+
+
+const positions =
+    geometry.attributes.position;
+
+
+for(
+    let i = 0;
+    i < positions.count;
+    i++
+) {
+
+    const x =
+        positions.getX(i);
+
+    const y =
+        positions.getY(i);
+
+
+    const z =
+        Math.sin(x * 1.3) *
+        Math.cos(y * 1.2) *
+        .35
+        +
+        Math.sin(x * 3) *
+        .1;
+
+
+    positions.setZ(
+        i,
+        z
+    );
+
+}
+
+
+geometry.computeVertexNormals();
+
+
+const material =
+    new THREE.MeshStandardMaterial({
+
+        color: 0x718c52,
+
+        wireframe: true,
+
+        transparent: true,
+
+        opacity: .75
+
+    });
+
+
+const terrain =
+    new THREE.Mesh(
+        geometry,
+        material
+    );
+
+
+terrain.rotation.x =
+    -Math.PI / 2.5;
+
+
+scene.add(terrain);
+
+
+/* pontos */
+
+const pointsGeometry =
+    new THREE.BufferGeometry();
+
+
+const pointPositions = [];
+
+
+for(
+    let i = 0;
+    i < 400;
+    i++
+) {
+
+    const x =
+        (Math.random() - .5) * 8;
+
+    const z =
+        (Math.random() - .5) * 8;
+
+    const y =
+        Math.sin(x * 1.3) *
+        Math.cos(z * 1.2) *
+        .35;
+
+    pointPositions.push(
+        x,
+        y,
+        z
+    );
+
+}
+
+
+pointsGeometry.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(
+        pointPositions,
+        3
+    )
+);
+
+
+const pointsMaterial =
+    new THREE.PointsMaterial({
+
+        color: 0xc4f18a,
+
+        size: .025
+
+    });
+
+
+const points =
+    new THREE.Points(
+        pointsGeometry,
+        pointsMaterial
+    );
+
+
+scene.add(points);
+
+
+
+/* animação */
+
+let terrainMouseX = 0;
+let terrainMouseY = 0;
+
+
+terrainContainer.addEventListener(
+    "mousemove",
+    function(e) {
+
+        const rect =
+            terrainContainer.getBoundingClientRect();
+
+        terrainMouseX =
+            ((e.clientX - rect.left) /
+            rect.width - .5);
+
+        terrainMouseY =
+            ((e.clientY - rect.top) /
+            rect.height - .5);
+
+    }
+);
+
+
+function animateTerrain() {
+
+    requestAnimationFrame(
+        animateTerrain
+    );
+
+
+    terrain.rotation.z +=
+        .0015;
+
+
+    terrain.rotation.y +=
+        terrainMouseX * .002;
+
+
+    terrain.rotation.x =
+        -Math.PI / 2.5
+        +
+        terrainMouseY * .15;
+
+
+    points.rotation.y +=
+        .001;
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+
+animateTerrain();
+
+
+
+/* resize */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        camera.aspect =
+            terrainContainer.clientWidth /
+            terrainContainer.clientHeight;
+
+        camera.updateProjectionMatrix();
+
+
+        renderer.setSize(
+            terrainContainer.clientWidth,
+            terrainContainer.clientHeight
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   FORMULÁRIO
+========================================================= */
+
+const form =
+    document.getElementById("budgetForm");
+
+const success =
+    document.getElementById("successMessage");
+
+
+form.addEventListener(
+    "submit",
+    function(e) {
+
+        e.preventDefault();
+
+
+        const nome =
+            document.getElementById("nome").value;
+
+        const empresa =
+            document.getElementById("empresa").value;
+
+        const telefone =
+            document.getElementById("telefone").value;
+
+        const email =
+            document.getElementById("email").value;
+
+        const cidade =
+            document.getElementById("cidade").value;
+
+        const servico =
+            document.getElementById("servico").value;
+
+        const mensagem =
+            document.getElementById("mensagem").value;
+
+
+        /*
+          TROQUE PELO NÚMERO REAL DA FALCI.
+
+          Formato:
+          5511999999999
+        */
+
+        const numeroWhatsApp =
+            "5511999999999";
+
+
+        const texto =
+
+`Olá, Falci Engenharia!
+
+Gostaria de solicitar um orçamento.
+
+Nome: ${nome}
+Empresa: ${empresa}
+WhatsApp: ${telefone}
+E-mail: ${email}
+Cidade: ${cidade}
+Serviço: ${servico}
+
+Descrição:
+${mensagem}`;
+
+
+        const url =
+            "https://wa.me/" +
+            numeroWhatsApp +
+            "?text=" +
+            encodeURIComponent(texto);
+
+
+        window.open(
+            url,
+            "_blank"
+        );
+
+
+        success.style.display =
+            "block";
+
+    }
+);
+
+</script>
+
+
+</body>
+</html>
