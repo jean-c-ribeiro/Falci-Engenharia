@@ -119,7 +119,7 @@
         .service-card p { color: #858b91; font-size: 14px; line-height: 1.7; }
 
         /* =========================================================
-           TECNOLOGIA / 3D VÍDEO
+           TECNOLOGIA / 3D VÍDEO (Com Contraste Perfeito para Leitura)
         ========================================================= */
         .terrain-section { 
             position: relative; 
@@ -142,11 +142,20 @@
             transform: translate(-50%, -50%);
             opacity: 1; 
             z-index: 0;
-            mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 25%, black 85%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 25%, black 85%, transparent);
         }
 
-        .terrain-content { position: relative; z-index: 2; max-width: 550px; padding: 40px 0; }
+        /* Caixa de texto com fundo em degradê escuro isolado na esquerda */
+        .terrain-content { 
+            position: relative; 
+            z-index: 2; 
+            max-width: 600px; 
+            padding: 50px 40px; 
+            background: linear-gradient(90deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.75) 65%, transparent 100%);
+            border-radius: 8px;
+        }
+
         .terrain-stat { margin-top: 45px; display: grid; grid-template-columns: repeat(2,1fr); gap: 30px; border-top: 1px solid var(--border); padding-top: 25px; }
         .stat-number { font-family: "Manrope"; font-size: 38px; font-weight: 800; color: var(--green); }
         .stat-label { color: #858b91; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
@@ -163,7 +172,7 @@
         .process-item p { color: #777e84; font-size: 13px; line-height: 1.7; }
 
         /* =========================================================
-           ÁREA DE ATUAÇÃO / MAPA REAL SÃO PAULO (POSIÇÃO CORRIGIDA)
+           ÁREA DE ATUAÇÃO / MAPA REAL SÃO PAULO
         ========================================================= */
         .coverage { background: var(--bg2); }
         
@@ -191,11 +200,10 @@
             z-index: 0;
         }
 
-        /* Marcador ajustado para a exata posição da cidade de São Roque */
         .map-marker {
             position: absolute;
-            top: 59%; /* Ajustado para baixo */
-            left: 59%; /* Ajustado para a direita (região metropolitana oeste) */
+            top: 59%;
+            left: 59%;
             width: 16px;
             height: 16px;
             transform: translate(-50%, -50%);
@@ -276,6 +284,7 @@
             .process-item:nth-child(2) { border-right: none; }
             .coverage-text { position: relative; left: 0; bottom: 0; border: none; border-top: 1px solid var(--border); border-radius: 0; width: 100%; text-align: center;}
             .coverage-text h3 { justify-content: center; }
+            .terrain-content { background: rgba(0,0,0,0.85); padding: 30px 20px; }
         }
 
         @media(max-width:600px) {
@@ -397,19 +406,19 @@
     </div>
 </section>
 
-<!-- SECÇÃO DE TECNOLOGIA (VÍDEO 3D) -->
+<!-- SECÇÃO DE TECNOLOGIA (COM DEGRADÊ DE CONTRASTE NO TEXTO) -->
 <section class="terrain-section" id="tecnologia">
     <video autoplay loop muted playsinline class="terrain-video-bg">
         <source src="projeto3d.mp4" type="video/mp4">
     </video>
 
-    <div class="container terrain-content">
-        <div class="section-label reveal">Tecnologia</div>
-        <h2 class="section-title reveal">O terreno,<br>em três dimensões.</h2>
-        <p class="section-text reveal" style="color: #c9ced3;">
+    <div class="container terrain-content reveal">
+        <div class="section-label">Tecnologia</div>
+        <h2 class="section-title">O terreno,<br>em três dimensões.</h2>
+        <p class="section-text" style="color: #c9ced3;">
             A tecnologia permite transformar informações coletadas em campo em representações digitais e gêmeos digitais que facilitam a análise e a execução.
         </p>
-        <div class="terrain-stat reveal delay-1">
+        <div class="terrain-stat">
             <div>
                 <div class="stat-number">3D</div>
                 <div class="stat-label">Modelagem digital</div>
@@ -451,7 +460,6 @@
     </div>
 </section>
 
-<!-- SECÇÃO DE ÁREA DE ATUAÇÃO COM O MAPA REAL DE SÃO PAULO (POSIÇÃO CORRIGIDA) -->
 <section class="section coverage" id="atuacao">
     <div class="container">
         <div class="section-label reveal">Área de atuação</div>
@@ -463,7 +471,6 @@
         <div class="coverage-map-box reveal">
             <img src="https://s2-g1.glbimg.com/QDXDvBvE4z90zh1BMzZ_Ss6H3dg=/0x0:1239x737/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2024/4/C/LO9S9SSb6t7tYRv9u9gw/mapa-incidencia-.bmp" alt="Mapa Estado de São Paulo" class="coverage-map-bg">
 
-            <!-- Ponto em São Roque reposicionado -->
             <div class="map-marker">
                 <div class="marker-pulse"></div>
                 <div class="marker-dot"></div>
