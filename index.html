@@ -25,7 +25,6 @@
             --border: rgba(255,255,255,.08);
             --white: #ffffff;
             --gray: #9ba1a6;
-            --gray-light: #c0c6cc;
             --green: #a7d86d;
             --green2: #c4f18a;
             --max: 1250px;
@@ -39,9 +38,7 @@
         }
 
         a { color: inherit; text-decoration: none; }
-        a:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
         button, input, textarea, select { font: inherit; }
-        button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 
         /* =========================================================
            UTILITÁRIOS & ANIMAÇÕES
@@ -60,8 +57,8 @@
             color: var(--green); font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px;
         }
         .section-label::before { content: ""; width: 25px; height: 1px; background: var(--green); }
-        .section-title { font-family: "Manrope", sans-serif; font-size: clamp(32px, 5vw, 65px); line-height: 1.1; letter-spacing: -2px; max-width: 850px; }
-        .section-text { color: var(--gray-light); max-width: 650px; line-height: 1.8; margin-top: 25px; }
+        .section-title { font-family: "Manrope", sans-serif; font-size: clamp(36px, 5vw, 65px); line-height: 1.1; letter-spacing: -2px; max-width: 850px; }
+        .section-text { color: var(--gray); max-width: 650px; line-height: 1.8; margin-top: 25px; }
 
         /* =========================================================
            HEADER
@@ -87,11 +84,11 @@
         .hero-content { position: relative; z-index: 2; padding-top: 80px; }
         .hero-tag { display: inline-flex; align-items: center; gap: 10px; color: var(--green); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; animation: fadeInDown 1s ease; }
         .hero-tag span { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 20px var(--green); animation: pulse 2s infinite; }
-        .hero h1 { font-family: "Manrope", sans-serif; font-size: clamp(40px, 8vw, 115px); line-height: .95; letter-spacing: -3px; max-width: 1000px; animation: fadeInUp 1s ease 0.2s both; }
+        .hero h1 { font-family: "Manrope", sans-serif; font-size: clamp(50px, 8vw, 115px); line-height: .95; letter-spacing: -3px; max-width: 1000px; animation: fadeInUp 1s ease 0.2s both; }
         .hero h1 strong { color: var(--green); font-weight: 800; }
-        .hero-description { max-width: 580px; color: var(--gray-light); line-height: 1.8; font-size: clamp(14px, 2vw, 16px); margin-top: 35px; animation: fadeInUp 1s ease 0.4s both; }
-        .hero-buttons { display: flex; gap: 15px; margin-top: 40px; animation: fadeInUp 1s ease 0.6s both; flex-wrap: wrap; }
-        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 16px 28px; font-weight: 600; font-size: 14px; transition: .3s; border-radius: 4px; }
+        .hero-description { max-width: 580px; color: #a8adb3; line-height: 1.8; font-size: 16px; margin-top: 35px; animation: fadeInUp 1s ease 0.4s both; }
+        .hero-buttons { display: flex; gap: 15px; margin-top: 40px; animation: fadeInUp 1s ease 0.6s both; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 16px 28px; font-weight: 600; font-size: 14px; transition: .3s; }
         .btn-primary { background: var(--green); color: #080a0c; }
         .btn-primary:hover { background: var(--green2); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(167,216,109,0.2); }
         .btn-outline { border: 1px solid var(--border); color: white; }
@@ -124,7 +121,7 @@
         .service-icon { width: 50px; height: 50px; display: grid; place-items: center; border: 1px solid var(--border); color: var(--green); margin: 50px 0 30px; font-size: 20px; transition: .4s; }
         .service-card:hover .service-icon { background: var(--green); color: #000; transform: scale(1.1); border-color: var(--green); }
         .service-card h3 { font-family: "Manrope"; font-size: 24px; margin-bottom: 15px; letter-spacing: -0.5px; }
-        .service-card p { color: var(--gray-light); font-size: 14px; line-height: 1.7; }
+        .service-card p { color: #858b91; font-size: 14px; line-height: 1.7; }
 
         /* =========================================================
            SEÇÃO 3D (COM VÍDEO DE FUNDO)
@@ -149,13 +146,16 @@
             object-fit: cover;
             z-index: 0;
             opacity: 0.6;
-            mix-blend-mode: screen;
+            mix-blend-mode: screen; /* Ajuda a misturar as cores do vídeo com o fundo cinza */
         }
         
         .terrain-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to right, var(--bg2) 0%, rgba(36,39,43,0.3) 100%);
+            background:
+                linear-gradient(to bottom, transparent 50%, rgba(28,31,35,0.7) 100%),
+                linear-gradient(to left, transparent 65%, rgba(28,31,35,0.7) 100%),
+                linear-gradient(to right, var(--bg2) 0%, rgba(36,39,43,0.3) 100%);
             z-index: 1;
         }
 
@@ -175,7 +175,7 @@
         }
 
         .stat-number { font-family: "Manrope"; font-size: 38px; font-weight: 800; color: var(--green); }
-        .stat-label { color: var(--gray-light); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
+        .stat-label { color: #666d73; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
 
         /* =========================================================
            PROCESSO
@@ -186,7 +186,7 @@
         .process-item:hover { background: rgba(255,255,255,0.02); }
         .process-number { color: var(--green); font-size: 12px; font-weight: 700; margin-bottom: 50px; }
         .process-item h3 { font-family: "Manrope"; font-size: 20px; margin-bottom: 12px; }
-        .process-item p { color: var(--gray-light); font-size: 13px; line-height: 1.7; }
+        .process-item p { color: #777e84; font-size: 13px; line-height: 1.7; }
 
         /* =========================================================
            ÁREA DE ATUAÇÃO
@@ -204,15 +204,15 @@
         .line2 { width: 240px; left: 40%; top: 50%; transform: rotate(20deg); }
         .coverage-text { position: absolute; left: 40px; bottom: 40px; }
         .coverage-text h3 { font-family: "Manrope"; font-size: 25px; }
-        .coverage-text p { color: var(--gray-light); margin-top: 10px; }
+        .coverage-text p { color: #7d8489; margin-top: 10px; }
 
         /* =========================================================
            ORÇAMENTO
         ========================================================= */
         .budget { position: relative; background: radial-gradient(circle at 80% 20%, rgba(167,216,109,.06), transparent 40%); }
         .budget-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 80px; align-items: start; }
-        .budget-info h2 { font-family: "Manrope"; font-size: clamp(32px, 5vw, 65px); line-height: 1.05; letter-spacing: -2px; }
-        .budget-info p { color: var(--gray-light); line-height: 1.8; margin-top: 25px; }
+        .budget-info h2 { font-family: "Manrope"; font-size: clamp(40px,5vw,65px); line-height: 1.05; letter-spacing: -2px; }
+        .budget-info p { color: #888f95; line-height: 1.8; margin-top: 25px; }
         .contact-data { margin-top: 45px; }
         .contact-data div { padding: 15px 0; border-bottom: 1px solid var(--border); color: #aaa; font-size: 14px; }
         .contact-data strong { color: white; margin-right: 10px; }
@@ -220,7 +220,7 @@
         .form-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; }
         .field { display: flex; flex-direction: column; gap: 8px; }
         .field.full { grid-column: 1 / -1; }
-        .field label { color: #c0c6cc; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
+        .field label { color: #8b9298; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
         .field input, .field textarea, .field select { width: 100%; padding: 15px; border: 1px solid var(--border); background: #131518; color: white; outline: none; transition: .3s; }
         .field textarea { min-height: 130px; resize: vertical; }
         .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--green); background: rgba(167,216,109,0.03); }
@@ -231,7 +231,7 @@
            FOOTER & RESPONSIVO
         ========================================================= */
         footer { padding: 40px 0; background: #15181a; }
-        .footer-content { display: flex; justify-content: space-between; align-items: center; color: #7d8489; font-size: 12px; }
+        .footer-content { display: flex; justify-content: space-between; align-items: center; color: #62686d; font-size: 12px; }
 
         @media(max-width:900px) {
             .nav-links { display: none; }
@@ -240,50 +240,19 @@
             .process { grid-template-columns: 1fr 1fr; }
             .process-item:nth-child(2) { border-right: none; }
             .terrain-section { min-height: auto; padding: 100px 0; }
-            .terrain-stat { gap: 30px; }
         }
 
         @media(max-width:600px) {
-            .container { width: min(100% - 24px, var(--max)); }
-            .section { padding: 80px 0; }
-            .section-title { font-size: clamp(28px, 6vw, 48px); }
-            .hero { min-height: 95vh; }
-            .hero h1 { font-size: clamp(32px, 7vw, 60px); }
-            .hero-description { font-size: 14px; }
-            .hero-buttons { flex-direction: column; gap: 12px; }
-            .btn { padding: 14px 24px; font-size: 13px; }
-            .services-grid { grid-template-columns: 1fr; gap: 20px; }
-            .service-card { min-height: auto; padding: 28px; }
-            .process { grid-template-columns: 1fr; gap: 0; }
-            .process-item { border-right: none; border-bottom: 1px solid var(--border); padding: 28px 20px; }
-            .process-item:last-child { border-bottom: none; }
+            .container { width: min(100% - 28px, var(--max)); }
+            .section { padding: 90px 0; }
+            .hero-buttons { flex-direction: column; }
+            .services-grid { grid-template-columns: 1fr; }
+            .process { grid-template-columns: 1fr; }
+            .process-item { border-right: none; border-bottom: 1px solid var(--border); }
             .form-grid { grid-template-columns: 1fr; }
             .field.full { grid-column: auto; }
-            .budget-form { padding: 28px 20px; }
-            .budget-info h2 { font-size: clamp(28px, 5vw, 48px); }
+            .budget-form { padding: 25px; }
             .footer-content { flex-direction: column; gap: 15px; text-align: center; }
-            .terrain-stat { grid-template-columns: 1fr; gap: 20px; }
-            .coverage-box { min-height: 350px; }
-            .map-dot.one { left: 35%; top: 45%; }
-            .map-dot.two { left: 50%; top: 30%; }
-            .map-dot.three { left: 60%; top: 55%; }
-        }
-
-        @media(max-width:380px) {
-            .container { width: calc(100% - 20px); }
-            .section { padding: 60px 0; }
-            .hero-tag { font-size: 11px; }
-            .hero h1 { font-size: clamp(28px, 7vw, 48px); letter-spacing: -1px; }
-            .hero-scroll { display: none; }
-            .section-title { font-size: clamp(24px, 5vw, 40px); }
-            .nav-button { padding: 10px 16px; font-size: 12px; }
-            .logo { gap: 8px; }
-            .logo-mark { width: 32px; height: 32px; font-size: 12px; }
-            .btn { padding: 12px 20px; font-size: 12px; }
-            .service-card { padding: 20px; }
-            .service-card h3 { font-size: 18px; }
-            .process-number { margin-bottom: 25px; }
-            .process-item h3 { font-size: 16px; }
         }
     </style>
 </head>
@@ -292,8 +261,8 @@
 <header id="header">
     <div class="container">
         <nav>
-            <a href="#" class="logo" aria-label="FALCI Engenharia - Início">
-                <div class="logo-mark" aria-hidden="true">F</div>
+            <a href="#" class="logo">
+                <div class="logo-mark">F</div>
                 <div>FALCI <span style="font-weight:400;color:#777;">ENGENHARIA</span></div>
             </a>
             <div class="nav-links">
@@ -308,6 +277,7 @@
 </header>
 
 <section class="hero">
+    <!-- VÍDEO DO TOPO (Fundo preto resolveu o desbotado) -->
     <video autoplay loop muted playsinline class="hero-bg-video">
         <source src="drone.mp4" type="video/mp4">
     </video>
@@ -355,37 +325,37 @@
         <div class="services-grid">
             <article class="service-card reveal">
                 <span class="service-number">01 / 06</span>
-                <div class="service-icon" aria-hidden="true">⌖</div>
+                <div class="service-icon">⌖</div>
                 <h3>Topografia</h3>
                 <p>Levantamentos topográficos para obtenção precisa das características e dimensões do terreno.</p>
             </article>
             <article class="service-card reveal delay-1">
                 <span class="service-number">02 / 06</span>
-                <div class="service-icon" aria-hidden="true">◇</div>
+                <div class="service-icon">◇</div>
                 <h3>Aerofotogrametria</h3>
                 <p>Levantamentos aéreos utilizando drones para geração de dados e modelos digitais.</p>
             </article>
             <article class="service-card reveal delay-2">
                 <span class="service-number">03 / 06</span>
-                <div class="service-icon" aria-hidden="true">◎</div>
+                <div class="service-icon">◎</div>
                 <h3>Georreferenciamento</h3>
                 <p>Determinação e representação precisa da localização espacial de áreas e terrenos.</p>
             </article>
             <article class="service-card reveal">
                 <span class="service-number">04 / 06</span>
-                <div class="service-icon" aria-hidden="true">▦</div>
+                <div class="service-icon">▦</div>
                 <h3>Levantamentos</h3>
                 <p>Levantamentos planialtimétricos para projetos, obras e empreendimentos.</p>
             </article>
             <article class="service-card reveal delay-1">
                 <span class="service-number">05 / 06</span>
-                <div class="service-icon" aria-hidden="true">△</div>
+                <div class="service-icon">△</div>
                 <h3>Modelagem 3D</h3>
                 <p>Representação tridimensional do terreno para análise e visualização do projeto.</p>
             </article>
             <article class="service-card reveal delay-2">
                 <span class="service-number">06 / 06</span>
-                <div class="service-icon" aria-hidden="true">+</div>
+                <div class="service-icon">+</div>
                 <h3>Soluções de Engenharia</h3>
                 <p>Serviços especializados para apoiar projetos residenciais, comerciais e industriais.</p>
             </article>
@@ -393,12 +363,17 @@
     </div>
 </section>
 
+<!-- =========================================================
+   NOVA SEÇÃO 3D (COM VÍDEO DE FUNDO DO PROJETO)
+========================================================= -->
 <section class="section terrain-section" id="tecnologia">
     
+    <!-- VÍDEO DO PRÉDIO/MALHA SURGINDO -->
     <video autoplay loop muted playsinline class="terrain-bg-video">
         <source src="projeto3d.mp4" type="video/mp4">
     </video>
 
+    <!-- Overlay escura para garantir leitura do texto na esquerda -->
     <div class="terrain-overlay"></div>
 
     <div class="container">
@@ -421,11 +396,12 @@
         </div>
     </div>
 </section>
+<!-- ========================================================= -->
 
 <section class="section">
     <div class="container">
         <div class="section-label reveal">Como funciona</div>
-        <h2 class="section-title reveal">Do campo ao dado.</h2>
+        <h2 class="section-title reveal">Precisão em cada etapa.</h2>
         <div class="process">
             <div class="process-item reveal">
                 <div class="process-number">01</div>
@@ -459,12 +435,12 @@
             Com sede em São Roque, a Falci Engenharia atende projetos em diferentes regiões do estado de São Paulo.
         </p>
         <div class="coverage-box reveal">
-            <div class="map-grid" aria-hidden="true"></div>
-            <div class="map-dot one" aria-hidden="true"></div>
-            <div class="map-dot two" aria-hidden="true"></div>
-            <div class="map-dot three" aria-hidden="true"></div>
-            <div class="map-line line1" aria-hidden="true"></div>
-            <div class="map-line line2" aria-hidden="true"></div>
+            <div class="map-grid"></div>
+            <div class="map-dot one"></div>
+            <div class="map-dot two"></div>
+            <div class="map-dot three"></div>
+            <div class="map-line line1"></div>
+            <div class="map-line line2"></div>
             <div class="coverage-text">
                 <h3>São Paulo — SP</h3>
                 <p>Atendimento em todo o estado.</p>
@@ -492,27 +468,27 @@
             <form class="budget-form reveal delay-1" id="budgetForm">
                 <div class="form-grid">
                     <div class="field">
-                        <label for="nome">Nome</label>
+                        <label>Nome</label>
                         <input type="text" id="nome" placeholder="Seu nome" required>
                     </div>
                     <div class="field">
-                        <label for="empresa">Empresa</label>
+                        <label>Empresa</label>
                         <input type="text" id="empresa" placeholder="Nome da empresa">
                     </div>
                     <div class="field">
-                        <label for="telefone">WhatsApp</label>
-                        <input type="tel" id="telefone" placeholder="(11) 99999-9999" pattern="[0-9\(\)\s-]+" required>
+                        <label>WhatsApp</label>
+                        <input type="tel" id="telefone" placeholder="(11) 99999-9999" required>
                     </div>
                     <div class="field">
-                        <label for="email">E-mail</label>
+                        <label>E-mail</label>
                         <input type="email" id="email" placeholder="seu@email.com">
                     </div>
                     <div class="field">
-                        <label for="cidade">Cidade</label>
+                        <label>Cidade</label>
                         <input type="text" id="cidade" placeholder="Cidade do serviço" required>
                     </div>
                     <div class="field">
-                        <label for="servico">Serviço</label>
+                        <label>Serviço</label>
                         <select id="servico" required>
                             <option value="">Selecione</option>
                             <option>Topografia</option>
@@ -524,7 +500,7 @@
                         </select>
                     </div>
                     <div class="field full">
-                        <label for="mensagem">Sobre o projeto</label>
+                        <label>Sobre o projeto</label>
                         <textarea id="mensagem" placeholder="Descreva brevemente o que você precisa..." required></textarea>
                     </div>
                 </div>
@@ -574,23 +550,6 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 /* =========================================================
-   MÁSCARA DE TELEFONE
-========================================================= */
-const telefoneInput = document.getElementById('telefone');
-telefoneInput.addEventListener('input', (e) => {
-    let v = e.target.value.replace(/\D/g, '');
-    if (v.length > 11) v = v.slice(0, 11);
-    
-    if (v.length <= 2) {
-        e.target.value = v;
-    } else if (v.length <= 7) {
-        e.target.value = `(${v.slice(0, 2)}) ${v.slice(2)}`;
-    } else {
-        e.target.value = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
-    }
-});
-
-/* =========================================================
    FORMULÁRIO WHATSAPP
 ========================================================= */
 const form = document.getElementById("budgetForm");
@@ -602,16 +561,15 @@ form.addEventListener("submit", function(e) {
     submitBtn.innerHTML = "Gerando link...";
     submitBtn.disabled = true;
 
-    const nome = document.getElementById("nome").value.trim();
-    const empresa = document.getElementById("empresa").value.trim();
-    const telefone = document.getElementById("telefone").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const cidade = document.getElementById("cidade").value.trim();
+    const nome = document.getElementById("nome").value;
+    const empresa = document.getElementById("empresa").value;
+    const telefone = document.getElementById("telefone").value;
+    const email = document.getElementById("email").value;
+    const cidade = document.getElementById("cidade").value;
     const servico = document.getElementById("servico").value;
-    const mensagem = document.getElementById("mensagem").value.trim();
+    const mensagem = document.getElementById("mensagem").value;
 
-    // ALTERE AQUI PARA O NÚMERO CORRETO DA FALCI
-    const numeroWhatsApp = "5511999999999";
+    const numeroWhatsApp = "5511999999999"; // ALTERE AQUI PARA O NÚMERO DA FALCI
     const texto = `Olá, Falci Engenharia!\n\nGostaria de solicitar um orçamento.\n\nNome: ${nome}\nEmpresa: ${empresa}\nWhatsApp: ${telefone}\nE-mail: ${email}\nCidade: ${cidade}\nServiço: ${servico}\n\nDescrição:\n${mensagem}`;
     const url = "https://wa.me/" + numeroWhatsApp + "?text=" + encodeURIComponent(texto);
 
