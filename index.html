@@ -163,7 +163,7 @@
         .process-item p { color: #777e84; font-size: 13px; line-height: 1.7; }
 
         /* =========================================================
-           ÁREA DE ATUAÇÃO / MAPA REAL SÃO PAULO
+           ÁREA DE ATUAÇÃO / MAPA REAL SÃO PAULO (POSIÇÃO CORRIGIDA)
         ========================================================= */
         .coverage { background: var(--bg2); }
         
@@ -186,17 +186,16 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* Deixa a imagem com tom escuro/monocromático para combinar com o site */
             filter: brightness(0.4) contrast(1.3) grayscale(0.8);
             opacity: 0.65;
             z-index: 0;
         }
 
-        /* Marcador de São Roque pulsante no mapa */
+        /* Marcador ajustado para a exata posição da cidade de São Roque */
         .map-marker {
             position: absolute;
-            top: 52%;
-            left: 48%;
+            top: 59%; /* Ajustado para baixo */
+            left: 59%; /* Ajustado para a direita (região metropolitana oeste) */
             width: 16px;
             height: 16px;
             transform: translate(-50%, -50%);
@@ -452,7 +451,7 @@
     </div>
 </section>
 
-<!-- SECÇÃO DE ÁREA DE ATUAÇÃO COM O MAPA REAL DE SÃO PAULO -->
+<!-- SECÇÃO DE ÁREA DE ATUAÇÃO COM O MAPA REAL DE SÃO PAULO (POSIÇÃO CORRIGIDA) -->
 <section class="section coverage" id="atuacao">
     <div class="container">
         <div class="section-label reveal">Área de atuação</div>
@@ -462,10 +461,9 @@
         </p>
         
         <div class="coverage-map-box reveal">
-            <!-- Imagem do mapa de SP com filtro dark mode aplicado via CSS -->
             <img src="https://s2-g1.glbimg.com/QDXDvBvE4z90zh1BMzZ_Ss6H3dg=/0x0:1239x737/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2024/4/C/LO9S9SSb6t7tYRv9u9gw/mapa-incidencia-.bmp" alt="Mapa Estado de São Paulo" class="coverage-map-bg">
 
-            <!-- Ponto luminoso animado em cima de São Roque -->
+            <!-- Ponto em São Roque reposicionado -->
             <div class="map-marker">
                 <div class="marker-pulse"></div>
                 <div class="marker-dot"></div>
