@@ -119,7 +119,7 @@
         .service-card p { color: #858b91; font-size: 14px; line-height: 1.7; }
 
         /* =========================================================
-           TECNOLOGIA / 3D VÍDEO (Painel Lateral Otimizado)
+           TECNOLOGIA / 3D VÍDEO
         ========================================================= */
         .terrain-section { 
             position: relative; 
@@ -146,7 +146,6 @@
             -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 80%, transparent);
         }
 
-        /* Painel lateral mais estreito e alinhado à esquerda */
         .terrain-overlay-left {
             position: absolute;
             top: 0;
@@ -258,7 +257,7 @@
         .coverage-text p { color: #858b91; margin-top: 10px; font-size: 14px; }
 
         /* =========================================================
-           ORÇAMENTO
+           ORÇAMENTO & FORMULÁRIO
         ========================================================= */
         .budget { position: relative; background: radial-gradient(circle at 80% 20%, rgba(167,216,109,.05), transparent 40%); }
         .budget-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 80px; align-items: start; }
@@ -272,7 +271,24 @@
         .field { display: flex; flex-direction: column; gap: 8px; }
         .field.full { grid-column: 1 / -1; }
         .field label { color: #8b9298; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
-        .field input, .field textarea, .field select { width: 100%; padding: 15px; border: 1px solid var(--border); background: #131518; color: white; outline: none; transition: .3s; }
+        
+        .field input, .field textarea, .field select { 
+            width: 100%; 
+            padding: 15px; 
+            border: 1px solid var(--border); 
+            background: #131518; 
+            color: white; 
+            outline: none; 
+            transition: .3s; 
+        }
+
+        /* Correção do fundo branco nas opções do select */
+        .field select option {
+            background: #1c1f23;
+            color: #ffffff;
+            padding: 12px;
+        }
+
         .field textarea { min-height: 130px; resize: vertical; }
         .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--green); background: rgba(167,216,109,0.03); }
         .form-submit { width: 100%; margin-top: 20px; }
@@ -472,7 +488,7 @@
     </div>
 </section>
 
-<!-- SECÇÃO DE ÁREA DE ATUAÇÃO COM O TÍTULO CORRIGIDO -->
+<!-- SECÇÃO DE ÁREA DE ATUAÇÃO -->
 <section class="section coverage" id="atuacao">
     <div class="container">
         <div class="section-label reveal">Área de atuação</div>
