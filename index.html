@@ -119,7 +119,7 @@
         .service-card p { color: #858b91; font-size: 14px; line-height: 1.7; }
 
         /* =========================================================
-           TECNOLOGIA / 3D VÍDEO (Painel Lateral Ajustado à Esquerda)
+           TECNOLOGIA / 3D VÍDEO (Painel Lateral Otimizado)
         ========================================================= */
         .terrain-section { 
             position: relative; 
@@ -146,12 +146,12 @@
             -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 80%, transparent);
         }
 
-        /* Painel lateral mais estreito e encostado na esquerda */
+        /* Painel lateral mais estreito e alinhado à esquerda */
         .terrain-overlay-left {
             position: absolute;
             top: 0;
             left: 0;
-            width: 42%; /* Reduzido para dar mais espaço ao vídeo */
+            width: 42%;
             height: 100%;
             background: linear-gradient(90deg, #000000 0%, #000000 50%, rgba(0,0,0,0.8) 75%, transparent 100%);
             z-index: 1;
@@ -420,7 +420,6 @@
         <source src="projeto3d.mp4" type="video/mp4">
     </video>
 
-    <!-- Painel lateral mais estreito -->
     <div class="terrain-overlay-left"></div>
 
     <div class="container" style="position: relative; z-index: 2;">
@@ -473,10 +472,11 @@
     </div>
 </section>
 
+<!-- SECÇÃO DE ÁREA DE ATUAÇÃO COM O TÍTULO CORRIGIDO -->
 <section class="section coverage" id="atuacao">
     <div class="container">
         <div class="section-label reveal">Área de atuação</div>
-        <h2 class="section-title reveal">São Roque para<br>todo São Paulo.</h2>
+        <h2 class="section-title reveal">Atendimento estratégico em todo o estado de São Paulo.</h2>
         <p class="section-text reveal">
             Com sede em São Roque, a Falci Engenharia atende projetos em diferentes regiões do estado de São Paulo.
         </p>
