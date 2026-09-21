@@ -11,24 +11,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
     <style>
         /* =========================================================
-           RESET & VARIÁVEIS (NOVO TEMA CINZA CONCRETO)
+           RESET & VARIÁVEIS (TEMA CINZA CONCRETO)
         ========================================================= */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         
         :root {
-            --bg: #1c1f23; /* Cinza chumbo escuro / Asfalto */
-            --bg2: #24272b; /* Cinza um pouco mais claro para destacar seções */
+            --bg: #1c1f23;
+            --bg2: #24272b;
             --card: rgba(255,255,255,.04);
             --border: rgba(255,255,255,.08);
             --white: #ffffff;
             --gray: #9ba1a6;
-            --green: #a7d86d; /* Mantemos o verde apenas para botões e detalhes */
+            --green: #a7d86d;
             --green2: #c4f18a;
             --max: 1250px;
         }
@@ -49,7 +46,6 @@
         .container { width: min(var(--max), calc(100% - 40px)); margin: auto; }
         .section { padding: 130px 0; position: relative; }
         
-        /* Classes para animação de scroll */
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.visible { opacity: 1; transform: translateY(0); }
         .delay-1 { transition-delay: 0.1s; }
@@ -80,12 +76,10 @@
         .nav-button:hover { background: var(--green); color: #080a0c; transform: translateY(-2px); }
 
         /* =========================================================
-           HERO (Com Vídeo)
+           HERO (Fundo Preto para realçar o vídeo)
         ========================================================= */
-        .hero { min-height: 100vh; position: relative; display: flex; align-items: center; overflow: hidden; background: var(--bg); }
-        
-        .hero-bg-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.35; transform: scale(1.05); }
-        
+        .hero { min-height: 100vh; position: relative; display: flex; align-items: center; overflow: hidden; background: #000000; }
+        .hero-bg-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.65; transform: scale(1.05); }
         .hero-grid { position: absolute; inset: 0; z-index: 1; background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 70px 70px; mask-image: radial-gradient(circle at center, black, transparent 85%); -webkit-mask-image: radial-gradient(circle at center, black, transparent 85%); }
         .hero-content { position: relative; z-index: 2; padding-top: 80px; }
         .hero-tag { display: inline-flex; align-items: center; gap: 10px; color: var(--green); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; animation: fadeInDown 1s ease; }
@@ -130,13 +124,53 @@
         .service-card p { color: #858b91; font-size: 14px; line-height: 1.7; }
 
         /* =========================================================
-           3D SECTION
+           SEÇÃO 3D (COM VÍDEO DE FUNDO)
         ========================================================= */
-        .terrain-section { background: var(--bg2); overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-        .terrain-layout { display: grid; grid-template-columns: .8fr 1.2fr; align-items: center; gap: 50px; }
-        #terrain3d { width: 100%; height: 600px; position: relative; }
-        .terrain-info { position: relative; z-index: 2; }
-        .terrain-stat { margin-top: 45px; display: grid; grid-template-columns: repeat(2,1fr); gap: 30px; border-top: 1px solid var(--border); padding-top: 25px; }
+        .terrain-section { 
+            position: relative;
+            background: var(--bg2); 
+            overflow: hidden; 
+            border-top: 1px solid var(--border); 
+            border-bottom: 1px solid var(--border); 
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .terrain-bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.6;
+            mix-blend-mode: screen; /* Ajuda a misturar as cores do vídeo com o fundo cinza */
+        }
+        
+        .terrain-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, var(--bg2) 0%, rgba(36,39,43,0.3) 100%);
+            z-index: 1;
+        }
+
+        .terrain-info { 
+            position: relative; 
+            z-index: 2; 
+        }
+
+        .terrain-stat { 
+            margin-top: 45px; 
+            display: grid; 
+            grid-template-columns: repeat(2, minmax(0, max-content)); 
+            gap: 50px; 
+            border-top: 1px solid var(--border); 
+            padding-top: 25px; 
+            max-width: 600px;
+        }
+
         .stat-number { font-family: "Manrope"; font-size: 38px; font-weight: 800; color: var(--green); }
         .stat-label { color: #666d73; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
 
@@ -199,10 +233,10 @@
         @media(max-width:900px) {
             .nav-links { display: none; }
             .services-grid { grid-template-columns: 1fr 1fr; }
-            .terrain-layout, .budget-layout { grid-template-columns: 1fr; gap: 50px; }
+            .budget-layout { grid-template-columns: 1fr; gap: 50px; }
             .process { grid-template-columns: 1fr 1fr; }
             .process-item:nth-child(2) { border-right: none; }
-            #terrain3d { height: 450px; }
+            .terrain-section { min-height: auto; padding: 100px 0; }
         }
 
         @media(max-width:600px) {
@@ -240,7 +274,7 @@
 </header>
 
 <section class="hero">
-    <!-- NOVO VIDEO ADICIONADO AQUI: drone.mp4 -->
+    <!-- VÍDEO DO TOPO (Fundo preto resolveu o desbotado) -->
     <video autoplay loop muted playsinline class="hero-bg-video">
         <source src="drone.mp4" type="video/mp4">
     </video>
@@ -326,30 +360,40 @@
     </div>
 </section>
 
+<!-- =========================================================
+   NOVA SEÇÃO 3D (COM VÍDEO DE FUNDO DO PROJETO)
+========================================================= -->
 <section class="section terrain-section" id="tecnologia">
+    
+    <!-- VÍDEO DO PRÉDIO/MALHA SURGINDO -->
+    <video autoplay loop muted playsinline class="terrain-bg-video">
+        <source src="projeto3d.mp4" type="video/mp4">
+    </video>
+
+    <!-- Overlay escura para garantir leitura do texto na esquerda -->
+    <div class="terrain-overlay"></div>
+
     <div class="container">
-        <div class="terrain-layout">
-            <div class="terrain-info">
-                <div class="section-label reveal">Tecnologia</div>
-                <h2 class="section-title reveal">O terreno,<br>em três dimensões.</h2>
-                <p class="section-text reveal">
-                    A tecnologia permite transformar informações coletadas em campo em representações digitais que facilitam a análise e o planejamento.
-                </p>
-                <div class="terrain-stat reveal">
-                    <div>
-                        <div class="stat-number">3D</div>
-                        <div class="stat-label">Modelagem digital</div>
-                    </div>
-                    <div>
-                        <div class="stat-number">GPS</div>
-                        <div class="stat-label">Precisão espacial</div>
-                    </div>
+        <div class="terrain-info">
+            <div class="section-label reveal">Tecnologia</div>
+            <h2 class="section-title reveal">O terreno,<br>em três dimensões.</h2>
+            <p class="section-text reveal">
+                A tecnologia permite transformar informações coletadas em campo em representações digitais que facilitam a análise e o planejamento.
+            </p>
+            <div class="terrain-stat reveal">
+                <div>
+                    <div class="stat-number">3D</div>
+                    <div class="stat-label">Modelagem digital</div>
+                </div>
+                <div>
+                    <div class="stat-number">GPS</div>
+                    <div class="stat-label">Precisão espacial</div>
                 </div>
             </div>
-            <div id="terrain3d" class="reveal delay-1"></div>
         </div>
     </div>
 </section>
+<!-- ========================================================= -->
 
 <section class="section">
     <div class="container">
@@ -501,77 +545,6 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-/* =========================================================
-   3D TERRAIN
-========================================================= */
-const terrainContainer = document.getElementById("terrain3d");
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45, terrainContainer.clientWidth / terrainContainer.clientHeight, .1, 100);
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-
-renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-renderer.setSize(terrainContainer.clientWidth, terrainContainer.clientHeight);
-terrainContainer.appendChild(renderer.domElement);
-
-camera.position.set(0, 5, 9);
-
-const light = new THREE.PointLight(0xa7d86d, 2, 30);
-light.position.set(3, 5, 4);
-scene.add(light);
-scene.add(new THREE.AmbientLight(0xffffff, .4));
-
-const geometry = new THREE.PlaneGeometry(8, 8, 50, 50);
-const positions = geometry.attributes.position;
-
-for(let i = 0; i < positions.count; i++) {
-    const x = positions.getX(i);
-    const y = positions.getY(i);
-    const z = Math.sin(x * 1.3) * Math.cos(y * 1.2) * .35 + Math.sin(x * 3) * .1;
-    positions.setZ(i, z);
-}
-geometry.computeVertexNormals();
-
-const material = new THREE.MeshStandardMaterial({ color: 0x718c52, wireframe: true, transparent: true, opacity: .75 });
-const terrain = new THREE.Mesh(geometry, material);
-terrain.rotation.x = -Math.PI / 2.5;
-scene.add(terrain);
-
-const pointsGeometry = new THREE.BufferGeometry();
-const pointPositions = [];
-for(let i = 0; i < 400; i++) {
-    const x = (Math.random() - .5) * 8;
-    const z = (Math.random() - .5) * 8;
-    const y = Math.sin(x * 1.3) * Math.cos(z * 1.2) * .35;
-    pointPositions.push(x, y, z);
-}
-pointsGeometry.setAttribute("position", new THREE.Float32BufferAttribute(pointPositions, 3));
-const pointsMaterial = new THREE.PointsMaterial({ color: 0xc4f18a, size: .025 });
-const points = new THREE.Points(pointsGeometry, pointsMaterial);
-scene.add(points);
-
-let terrainMouseX = 0, terrainMouseY = 0;
-terrainContainer.addEventListener("mousemove", function(e) {
-    const rect = terrainContainer.getBoundingClientRect();
-    terrainMouseX = ((e.clientX - rect.left) / rect.width - .5);
-    terrainMouseY = ((e.clientY - rect.top) / rect.height - .5);
-});
-
-function animateTerrain() {
-    requestAnimationFrame(animateTerrain);
-    terrain.rotation.z += .0015;
-    terrain.rotation.y += terrainMouseX * .002;
-    terrain.rotation.x = -Math.PI / 2.5 + terrainMouseY * .15;
-    points.rotation.y += .001;
-    renderer.render(scene, camera);
-}
-animateTerrain();
-
-window.addEventListener("resize", function() {
-    camera.aspect = terrainContainer.clientWidth / terrainContainer.clientHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(terrainContainer.clientWidth, terrainContainer.clientHeight);
-});
 
 /* =========================================================
    FORMULÁRIO WHATSAPP
